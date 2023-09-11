@@ -1,6 +1,7 @@
 on:
   pull_request:
     types: [opened, reopened]
+  workflow_dispatch:
 
 name: Azure ARM CI Pipeline
 
