@@ -6,6 +6,8 @@ name: Azure ARM CD Pipeline
 jobs:
   build-and-validate:
     runs-on: ubuntu-latest
+    environment: manual_approval
+
     steps:
     - uses: actions/checkout@main
 
@@ -20,17 +22,8 @@ jobs:
         subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
         resourceGroupName: ${{ secrets.AZURE_RG }}
         template: src/main.bicep
-        parameters: 'storagePrefix=myprefix storageSKU=Standard_LRS'
+        parameters: 'storagePrefix=prefix storageSKU=Standard_LRS'
         additionalArguments: "--what-if"
-
-    - name: manual approval
-      uses: trstringer/manual-approval@v1
-      with:
-        secret: ${{ github.TOKEN }}
-        approvers: PPPW
-        minimum-approvals: 1
-        issue-title: "Deploying ARM templates to Prod"
-        issue-body: "Please review the what-if results and approve or deny the deployment:\n ${{ steps.what-if.outputs }}"
 
   deploy-prod:
     runs-on: ubuntu-latest
@@ -49,5 +42,5 @@ jobs:
         subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
         resourceGroupName: ${{ secrets.AZURE_RG }}
         template: src/main.bicep
-        parameters: 'storagePrefix=myprefix storageSKU=Standard_LRS'
+        parameters: 'storagePrefix=prefix storageSKU=Standard_LRS'
         failOnStdErr: false
