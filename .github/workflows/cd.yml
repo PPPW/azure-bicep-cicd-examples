@@ -21,7 +21,7 @@ jobs:
         subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
         resourceGroup: ${{ secrets.AZURE_RG }}
         templateFile: src/main.bicep
-        parametersFile: 'storagePrefix=prefix storageSKU=Standard_LRS'
+        parametersFile: src/main.parameters.json
         whatIf: true
 
   deploy-prod:
