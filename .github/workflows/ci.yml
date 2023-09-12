@@ -6,17 +6,24 @@ on:
 name: Azure ARM CI Pipeline
 
 jobs:
-  build-and-deploy:
+  lint:
     runs-on: ubuntu-latest
     steps:
+    - uses: actions/checkout@main
 
+    - name: Run Bicep linter
+      run: az bicep build --file src/main.bicep
+
+  validate:
+    runs-on: ubuntu-latest
+    steps:
     - uses: actions/checkout@main
 
     - uses: azure/login@v1
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-    - name: validate Bicep file
+    - name: Run Bicep validation
       uses: azure/arm-deploy@v1
       with:
         subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
