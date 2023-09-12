@@ -23,6 +23,7 @@ jobs:
         template: src/main.bicep
         parameters: 'storagePrefix=prefix storageSKU=Standard_LRS'
         additionalArguments: "--what-if"
+        failOnStdErr: false
 
   deploy-prod:
     runs-on: ubuntu-latest
