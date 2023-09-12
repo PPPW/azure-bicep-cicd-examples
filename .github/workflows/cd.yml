@@ -14,21 +14,20 @@ jobs:
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-    - name: run what-if
-      uses: azure/arm-deploy@v1
-      id: what-if
+    - name: Run what-if
+      uses: anthony-c-martin/bicep-action@validate-and-gen-markdown
       with:
         subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
         resourceGroupName: ${{ secrets.AZURE_RG }}
-        template: src/main.bicep
-        parameters: 'storagePrefix=prefix storageSKU=Standard_LRS'
-        additionalArguments: "--what-if"
-        failOnStdErr: false
+        templateFile: src/main.bicep
+        parametersFile: 'storagePrefix=prefix storageSKU=Standard_LRS'
+        whatIf: true
 
   deploy-prod:
     runs-on: ubuntu-latest
     needs: build-and-validate
     environment: manual_approval
+    concurrency: ${{ github.ref }}
 
     steps:
     - uses: actions/checkout@main
@@ -37,7 +36,7 @@ jobs:
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-    - name: deploy ARM template
+    - name: Deploy the ARM template to Prod
       uses: azure/arm-deploy@v1
       with:
         subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
