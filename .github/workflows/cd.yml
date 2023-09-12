@@ -18,7 +18,7 @@ jobs:
       uses: anthony-c-martin/bicep-action@validate-and-gen-markdown
       with:
         subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
-        resourceGroupName: ${{ secrets.AZURE_RG }}
+        resourceGroup: ${{ secrets.AZURE_RG }}
         templateFile: src/main.bicep
         parametersFile: 'storagePrefix=prefix storageSKU=Standard_LRS'
         whatIf: true
